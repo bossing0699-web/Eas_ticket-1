@@ -112,7 +112,7 @@ dialog td input{text-align:left;background:#fff;border-color:var(--line)}
 </main>
 
 <dialog id="dR"><b>แก้ไขรายชื่อ Cluster Leader</b>
-  <div style="overflow:auto;max-height:60vh;margin-top:8px"><table><thead><tr><th>AD EAS</th><th>Mgr.</th><th>Cluster Leader</th><th>Province</th><th></th></tr></thead><tbody id="rBody"></tbody></table></div>
+  <div style="overflow:auto;max-height:60vh;margin-top:8px"><table><thead><tr><th>Associate Director</th><th>Manager Area</th><th>Cluster Leader</th><th>Province</th><th></th></tr></thead><tbody id="rBody"></tbody></table></div>
   <div class="row"><button id="rAdd">+ เพิ่มแถว</button><button id="rCancel">ยกเลิก</button><button class="p" id="rSave">บันทึก</button></div>
 </dialog>
 
@@ -130,14 +130,17 @@ dialog td input{text-align:left;background:#fff;border-color:var(--line)}
 <dialog id="dC" style="width:480px"><b>เชื่อมต่อ Supabase (Report INOC 2026)</b>
   <label>Project URL</label><input class="w" id="cUrl" placeholder="https://xxxx.supabase.co">
   <label>anon / publishable key</label><input class="w" id="cKey">
-  <div class="row" style="justify-content:flex-start"><button id="cPush">ส่งข้อมูลปัจจุบันขึ้น Supabase</button><button id="cPull">ดึงข้อมูลจาก Supabase</button></div>
-  <div class="row"><button id="cCancel">ปิด</button><button class="p" id="cSave">บันทึก</button></div>
+  <div id="cStatus" style="color:var(--mut);margin-top:8px;font-size:12px">ต้องมีตาราง roster, teams, daily_follow และ upload_log · ค่านี้เก็บเฉพาะในหน่วยความจำจนกว่าจะปิดหน้าเว็บ</div>
+  <div class="row" style="justify-content:flex-start"><button id="cTest">ทดสอบการเชื่อมต่อ</button><button id="cPush">ส่งข้อมูลปัจจุบันขึ้น Supabase</button><button id="cPull">ดึงข้อมูลจาก Supabase</button></div>
+  <div class="row"><button id="cCancel">ปิด</button><button class="p" id="cSave">ใช้การเชื่อมต่อนี้</button></div>
 </dialog>
 
 <script>
 const SEED = {"roster":[{"ad_eas":"Sarayut 096-256-4556","mgr":"EAS1 : Manas 096-2519651","cluster_leader":"Nanthachat 083-9949059","province":"CBR"},{"ad_eas":"Sarayut 096-256-4556","mgr":"EAS1 : Manas 096-2519651","cluster_leader":"Samrit 082-9934623","province":"CCS"},{"ad_eas":"Sarayut 096-256-4556","mgr":"EAS2 : Wirote 086-5630506","cluster_leader":"Apichat 087-2004567","province":"RYG"},{"ad_eas":"Sarayut 096-256-4556","mgr":"EAS2 : Wirote 086-5630506","cluster_leader":"Chaiyasit 085-9801147","province":"CTB"},{"ad_eas":"Sarayut 096-256-4556","mgr":"EAS2 : Wirote 086-5630506","cluster_leader":"Chaiyasit 085-9801147","province":"TRT"},{"ad_eas":"Sarayut 096-256-4556","mgr":"EAS3 : Veerachon 090-9040324","cluster_leader":"Jakgapan 083-9950429","province":"PCR"},{"ad_eas":"Sarayut 096-256-4556","mgr":"EAS3 : Veerachon 090-9040324","cluster_leader":"Jakgapan 083-9950429","province":"NKN"},{"ad_eas":"Sarayut 096-256-4556","mgr":"EAS3 : Veerachon 090-9040324","cluster_leader":"Jakgapan 083-9950429","province":"SKO"}],"teams":[["CC-EA-CBR-OFC-001","CC-EA-CBR-OFC-001 【OFF】( Chumphol_OF_CBR_WW  Tel.0615272627_E12 )","CBR","OFC","Korakot"],["EX-EA-CBR-OFC-102","EX-EA-CBR-OFC-102 【ON】( Sitthikorn_OF_CBR_WW  Tel.0983749723_E12_EX )","CBR","OFC","Korakot"],["EX-EA-CBR-OFC-104","EX-EA-CBR-OFC-104 【ON-】( Danai_OF_CBR_WW  Tel.0842510494_E12 )","CBR","OFC","Korakot"],["EX-EA-CBR-OFC-112","EX-EA-CBR-OFC-112 【ON】( Thanaphon_OF_CBR_WW  Tel.0826946919_E12_EX )","CBR","OFC","Korakot"],["EX-EA-CBR-OFC-135","EX-EA-CBR-OFC-135 【ON】( Pollapat_OF_CBR_WW  Tel.0654261888_E12_EX )","CBR","OFC","Korakot"],["EX-EA-CBR-OFC-136","EX-EA-CBR-OFC-136 【ON】( Sakarin_OF_CBR_WW  Tel.0809455460_E12_EX )","CBR","OFC","Korakot"],["EX-EA-CBR-OFC-211","EX-EA-CBR-OFC-211 【ON-】( Chaiyapat_OF_CBR_WW  Tel.0952083786_E12_EX )","CBR","OFC","Korakot"],["NP-EA-CBR-OFC-003","NP-EA-CBR-OFC-003 【OFF】( Chananun_OF_CBR_WW  Tel.0955085874_E12 )","CBR","OFC","Korakot"],["RU-EA-CBR-OFC-103","RU-EA-CBR-OFC-103 【ON】( Amphon_OF_CBR_WW  Tel.0871069239_E12 )","CBR","OFC","Korakot"],["RU-EA-CBR-OFC-107","RU-EA-CBR-OFC-107 【ON】( Songkran_OF_CBR_WW  Tel.0649151601_E12 )","CBR","OFC","Korakot"],["ST-EA-CBR-OFC-106","ST-EA-CBR-OFC-106 【ON】( Chayangkun_OF_CBR_WW  Tel.0902214258_E12_EX )","CBR","OFC","Korakot"],["SY-EA-CBR-OFC-210","SY-EA-CBR-OFC-210 【ON】( Audomsak_OF_CBR_WW  Tel.0917281365_E12 )","CBR","OFC","Korakot"],["EX-EA-CBR-OFC-103","EX-EA-CBR-OFC-103 【ON】( Watcharin_OF_CBR_WW  Tel.0823972258_E13 )","CBR","OFC","Nanthachat"],["EX-EA-CBR-OFC-117","EX-EA-CBR-OFC-117 【OFF】( Metha_OF_CBR_WW  Tel.0996191258_E13 )","CBR","OFC","Nanthachat"],["EX-EA-CBR-OFC-118","EX-EA-CBR-OFC-118 【ON】( Kroekrit_OF_CBR_WW  Tel.0930308083_E13 )","CBR","OFC","Nanthachat"],["EX-EA-CBR-OFC-132","EX-EA-CBR-OFC-132 【ON】( Phongsakorn_OF_CBR_WW  Tel.0955739178_E13 )","CBR","OFC","Nanthachat"],["EX-EA-CBR-OFC-133","EX-EA-CBR-OFC-133 【ON】( Veerachon_OF_CBR_WW  Tel.0942677247_E13 )","CBR","OFC","Nanthachat"],["EX-EA-CBR-OFC-137","EX-EA-CBR-OFC-137 【ON】( Somkieat_OF_CBR_WW  Tel.0872698693_E13_EX )","CBR","OFC","Nanthachat"],["EX-EA-CBR-OFC-214","EX-EA-CBR-OFC-214 【ON】( Jetsada_OF_CBR_WW  Tel.0928021003_E13_EX )","CBR","OFC","Nanthachat"],["RU-EA-CBR-OFC-101","RU-EA-CBR-OFC-101 【ON】( Silprasert_OF_CBR_WW  Tel.0653453673_E13 )","CBR","OFC","Nanthachat"],["RU-EA-CBR-OFC-102","RU-EA-CBR-OFC-102 【OFF】( Arun_OF_CBR_WW  Tel.0613800184_E13 )","CBR","OFC","Nanthachat"],["RU-EA-CBR-OFC-106","RU-EA-CBR-OFC-106 【ON】( Supachai_OF_CBR_WW  Tel.0935177756_E13 )","CBR","OFC","Nanthachat"],["SY-EA-CBR-OFC-109","SY-EA-CBR-OFC-109 【ON】( Petpinyo_OF_CBR_WW  Tel.0902483727_E13 )","CBR","OFC","Nanthachat"],["SY-EA-CBR-OFC-110","SY-EA-CBR-OFC-110 【ON】( Annop_OF_CBR_WW  Tel.0632926936_E13 )","CBR","OFC","Nanthachat"],["SY-EA-CBR-MUF-002","SY-EA-CBR-MUF-002 【OFF】( Wichai_NH_CBR_WW  Tel.0958093386_E26 )","CBR","NODE","Ronnagrit"],["SY-EA-CBR-NOD-004","SY-EA-CBR-NOD-004 【ON】( Pariwat_NH_CBR_WW  Tel.0632242914_E26 )","CBR","NODE","Ronnagrit"],["SY-EA-CBR-NOD-104","SY-EA-CBR-NOD-104 【ON-】( Apichart_NO_CBR_WW  Tel.0659216987_E26 )","CBR","NODE","Ronnagrit"],["SY-EA-CBR-NOD-105","SY-EA-CBR-NOD-105 【ON】( Songwut_NH_CBR_WW  Tel.0618343434_E26 )","CBR","NODE","Ronnagrit"],["SY-EA-CBR-NOD-110","SY-EA-CBR-NOD-110 【ON】( Apidach_NO_CBR_WW  Tel.0928844501_E26 )","CBR","NODE","Ronnagrit"],["SY-EA-CBR-NOD-203","SY-EA-CBR-NOD-203 【ON】( Pakorn_NH_CBR_WW  Tel.0960610477_E26 )","CBR","NODE","Ronnagrit"],["SY-EA-CBR-NOD-205","SY-EA-CBR-NOD-205 【ON】( Adisorn_NH_CBR_WW  Tel.0928815862_E26 )","CBR","NODE","Ronnagrit"],["SY-EA-CBR-NOD-206","SY-EA-CBR-NOD-206 【ON】( Kajonded_NH_CBR_WW  Tel.0817037591_E26 )","CBR","NODE","Ronnagrit"],["SY-EA-CBR-MUF-001","SY-EA-CBR-MUF-001 【ON】( Aet_OF_CBR_M1_WW  Tel.0800715001_E26 )","CBR","OFC","Ronnagrit"],["EX-EA-CBR-OFC-204","EX-EA-CBR-OFC-204 【ON】( Teeradaj_OF_CBR_WW  Tel.0839946916_E14_EX )","CBR","OFC","Teekhawit"],["EX-EA-CBR-OFC-210","EX-EA-CBR-OFC-210 【ON】( Teerapat _OF_CBR_WW  Tel.0834379080_E14_EX )","CBR","OFC","Teekhawit"],["NP-EA-CBR-OFC-001","NP-EA-CBR-OFC-001 【ON】( Nattichok_OF_CBR_WW  Tel.0648627796_E14 )","CBR","OFC","Teekhawit"],["NP-EA-CBR-OFC-002","NP-EA-CBR-OFC-002 【ON】( Somkiet_OF_CBR_WW  Tel.0968348890_E14 )","CBR","OFC","Teekhawit"],["SY-EA-CBR-OFC-204","SY-EA-CBR-OFC-204 【ON】( Bodin_OF_CBR_WW  Tel.0630097393_E14 )","CBR","OFC","Teekhawit"],["SY-EA-CBR-OFC-205","SY-EA-CBR-OFC-205 【ON】( Phonlawat_OF_CBR_WW  Tel.0620953843_E14 )","CBR","OFC","Teekhawit"],["SY-EA-CBR-OFC-211","SY-EA-CBR-OFC-211 【ON】( Pinit_OF_CBR_WW  Tel.0822733343_E14 )","CBR","OFC","Teekhawit"],["SY-EA-CBR-OFC-213","SY-EA-CBR-OFC-213 【ON】( Patcharapon_OF_CBR_WW  Tel.0630701808_E14 )","CBR","OFC","Teekhawit"],["SY-EA-CBR-OFC-214","SY-EA-CBR-OFC-214 【ON】( Sukanyai_OF_CBR_WW  Tel.0945758340_E14 )","CBR","OFC","Teekhawit"],["SY-EA-CCS-NOD-003","SY-EA-CCS-NOD-003 【ON】( Nopporn_NH_CCS_WW  Tel.0988708348_E27 )","CCS","NODE","Akaradetch"],["SY-EA-CCS-NOD-004","SY-EA-CCS-NOD-004 【ON】( Nattaphon_NH_CCS_WW  Tel.0957467505_E27 )","CCS","NODE","Akaradetch"],["SY-EA-CCS-NOD-005","SY-EA-CCS-NOD-005 【ON】( Natthanai_NH_CCS_WW  Tel.0644690186_E27 )","CCS","NODE","Akaradetch"],["EX-EA-CCS-OFC-002","EX-EA-CCS-OFC-002 【ON】( Sarayut_OF_CCS_WW  Tel.0988912078_E21 )","CCS","OFC","Samrit"],["EX-EA-CCS-OFC-003","EX-EA-CCS-OFC-003 【ON】( Nukun_OF_CCS_WW  Tel.0820758639_E21 )","CCS","OFC","Samrit"],["EX-EA-CCS-OFC-004","EX-EA-CCS-OFC-004 【ON】( Apichart_OF_CCS_WW  Tel.0840768575_E21 )","CCS","OFC","Samrit"],["EX-EA-CCS-OFC-005","EX-EA-CCS-OFC-005 【ON-】( Udom_OF_CCS_WW  Tel.0656254926_E21 )","CCS","OFC","Samrit"],["EX-EA-CCS-OFC-007","EX-EA-CCS-OFC-007 【ON】( Thanyawat_OF_CCS_WW  Tel.0829936299_E21 )","CCS","OFC","Samrit"],["EX-EA-CCS-OFC-008","EX-EA-CCS-OFC-008 【ON】( Narthanasil_OF_CCS_WW  Tel.0806745061 _E21 )","CCS","OFC","Samrit"],["EX-EA-CCS-OFC-015","EX-EA-CCS-OFC-015 【ON】( Wisit_OF_CCS_WW  Tel.0867501398_E21_EX )","CCS","OFC","Samrit"],["EX-EA-CCS-OFC-017","EX-EA-CCS-OFC-017 【ON】( Pakorn_OF_CCS_WW  Tel.0642376047_E21_EX )","CCS","OFC","Samrit"],["EX-EA-CCS-OFC-018","EX-EA-CCS-OFC-018 【ON】( Naret_OF_CCS_WW  Tel.0918192425_E21_EX )","CCS","OFC","Samrit"],["EX-EA-CCS-OFC-019","EX-EA-CCS-OFC-019 【ON】( Adisai_OF_CCS_WW  Tel.0855075358_E21_EX )","CCS","OFC","Samrit"],["NP-EA-CCS-OFC-001","NP-EA-CCS-OFC-001 【ON】( Anuchit_OF_CCS_WW  Tel.0971201740_E21_EX )","CCS","OFC","Samrit"],["SY-EA-CCS-OFC-001","SY-EA-CCS-OFC-001 【ON】( Chaiyan_OF_CCS_WW  Tel.0811150872_E21 )","CCS","OFC","Samrit"],["SY-EA-CCS-OFC-003","SY-EA-CCS-OFC-003 【OFF】( Narongsak_OF_CCS_WW  Tel.0613323390_E21 )","CCS","OFC","Samrit"],["SY-EA-CCS-OFC-004","SY-EA-CCS-OFC-004 【ON】( Anupong_OF_CCS_WW  Tel.0803095037_E21 )","CCS","OFC","Samrit"],["SY-EA-CCS-OFC-005","SY-EA-CCS-OFC-005 【OFF】( Lecha_OF_CCS_WW  Tel.0804155991_E21 )","CCS","OFC","Samrit"],["SY-EA-CCS-OFC-006","SY-EA-CCS-OFC-006 【OFF】( Kittithat_OF_CCS_WW  Tel.0981704608_E21 )","CCS","OFC","Samrit"],["SY-EA-CTB-OFC-004","SY-EA-CTB-OFC-004 【ON】( Natchaphon_OF_CTB_WW  Tel.0983108123_E23 )","CTB","OFC","Chaiyasit"],["SY-EA-CTB-NOD-002","SY-EA-CTB-NOD-002 【ON】( Akarawat_NO_CTB_WW  Tel.0815529914_E04 )","CTB","NODE","Somphop"],["SY-EA-CTB-NOD-003","SY-EA-CTB-NOD-003 【ON】( Supakrit_NH_CTB_WW  Tel.0910213601_E04 )","CTB","NODE","Somphop"],["SY-EA-CTB-NOD-004","SY-EA-CTB-NOD-004 【ON】( Arnatchai_NH_CTB_WW  Tel.0973437740_E04 )","CTB","NODE","Somphop"],["SY-EA-CTB-OFC-002","SY-EA-CTB-OFC-002 【ON】( Somphong_OF_CTB_WW  Tel.0821832501_E04 )","CTB","OFC","Somphop"],["SY-EA-CTB-OFC-003","SY-EA-CTB-OFC-003 【ON】( Wirapat_OF_CTB_WW  Tel.0936874748_E04 )","CTB","OFC","Somphop"],["SY-EA-CTB-OFC-005","SY-EA-CTB-OFC-005 【ON】( Narongrit_OF_CTB_WW  Tel.0636327661_E04 )","CTB","OFC","Somphop"],["SY-EA-CTB-OFC-009","SY-EA-CTB-OFC-009 【ON】( Sittisak_OF_CTB_WW  Tel.0924661213_E04 )","CTB","OFC","Somphop"],["SY-EA-CTB-OFC-010","SY-EA-CTB-OFC-010 【OFF】(  Chettana_OF_CTB_WW  Tel.0871420882_E04 )","CTB","OFC","Somphop"],["SY-EA-NKN-NOD-003","SY-EA-NKN-NOD-003 【ON】( Thosad_NO_NKN_WW  Tel.0924797021_E27 )","NKN","NODE","Akaradetch"],["SY-EA-NKN-NOD-004","SY-EA-NKN-NOD-004 【ON】( Sattra_NH_NKN_WW  Tel.0952347376_E27 )","NKN","NODE","Akaradetch"],["SY-EA-NKN-OFC-002","SY-EA-NKN-OFC-002 【ON】( Phusit_OF_NKN_WW  Tel.0822533242_E07 )","NKN","OFC","Nampol"],["SY-EA-NKN-OFC-003","SY-EA-NKN-OFC-003 【ON】( Ratchanon_OF_NKN_WW  Tel.0646601219_E07 )","NKN","OFC","Nampol"],["SYS-NKN-OFC-Kasitinat","SYS-NKN-OFC-Kasitinat 【ON】( Kasitinat_OF_NKN_WW  Tel.0967389643_E07 )","NKN","OFC","Nampol"],["EX-EA-PCR-OFC-002","EX-EA-PCR-OFC-002 【ON】( Kamphon_OF_PCR_WW  Tel.0823647658_E06_EX )","PCR","OFC","Kiatisak"],["EX-EA-PCR-OFC-016","EX-EA-PCR-OFC-016 【ON】( Jakrin _OF_PCR_WW  Tel.0984651833_E06_EX )","PCR","OFC","Kiatisak"],["NP-EA-PCR-OFC-001","NP-EA-PCR-OFC-001 【ON】( Ekachai_OF_PCR_WW  Tel.0824700878_E06 )","PCR","OFC","Kiatisak"],["SY-EA-PCR-OFC-010","SY-EA-PCR-OFC-010 【ON】( Kronchit_OF_PCR_WW  Tel.0953674396_E06_EX )","PCR","OFC","Kiatisak"],["SY-EA-PCR-NOD-001","SY-EA-PCR-NOD-001 【ONC】( Chatchai_NH_PCR_WW  Tel.0918814109_E10 )","PCR","NODE","Wipawee"],["SY-EA-PCR-NOD-005","SY-EA-PCR-NOD-005 【ON】( Wirat_NO_PCR_WW  Tel.0647356236_E10 )","PCR","NODE","Wipawee"],["SY-EA-PCR-OFC-003","SY-EA-PCR-OFC-003 【ONC】( Nattapol_OF_PCR_WW  Tel.0964472076_E10 )","PCR","OFC","Wipawee"],["SY-EA-PCR-OFC-008","SY-EA-PCR-OFC-008 【ON】( Soponpit_OF_PCR_WW  Tel.0800749690_E10 )","PCR","OFC","Wipawee"],["SY-EA-PCR-OFC-012","SY-EA-PCR-OFC-012 【OFF】( Jakkid_OF_PCR_WW  Tel.0832600927_E10 )","PCR","OFC","Wipawee"],["EX-EA-RYG-OFC-007","EX-EA-RYG-OFC-007 【ON】( Saithan_OF_RYG_WW  Tel.0829054696_E02_EX )","RYG","OFC","Kamon"],["SY-EA-RYG-OFC-006","SY-EA-RYG-OFC-006 【ON】( Nikom_OF_RYG_WW  Tel.0996083488_E02 )","RYG","OFC","Kamon"],["SY-EA-RYG-OFC-020","SY-EA-RYG-OFC-020 【ON】( Suwan_OF_RYG_WW  Tel.0832768375_E02 )","RYG","OFC","Kamon"],["SY-EA-RYG-OFC-022","SY-EA-RYG-OFC-022 【ON】( Theeraphat_OF_RYG_WW  Tel.0997108103_E02 )","RYG","OFC","Kamon"],["SY-EA-RYG-OFC-032","SY-EA-RYG-OFC-032 【ON】( Jirapat_OF_RYG_WW  Tel.0628377759_E02 )","RYG","OFC","Kamon"],["SY-EA-RYG-NOD-001","SY-EA-RYG-NOD-001 【ON】( Nitipong_NH_RYG_WW  Tel.0615874153_E03 )","RYG","NODE","Nattapong"],["SY-EA-RYG-NOD-005","SY-EA-RYG-NOD-005 【ON】( Traisorn_NH_RYG_WW  Tel.0655538167_E03 )","RYG","NODE","Nattapong"],["SY-EA-RYG-NOD-006","SY-EA-RYG-NOD-006 【ON】( Kittisak _NH_RYG_WW  Tel.0646547877_E03 )","RYG","NODE","Nattapong"],["SY-EA-RYG-NOD-008","SY-EA-RYG-NOD-008 【ON】( Apisit_NH_RYG_WW  Tel.0926862899_E03 )","RYG","NODE","Nattapong"],["SY-EA-RYG-NOD-009","SY-EA-RYG-NOD-009 【ON】( Wuttchat_NH_RYG_WW  Tel.0990810472_E03 )","RYG","NODE","Nattapong"],["SY-EA-RYG-NOD-011","SY-EA-RYG-NOD-011 【ON】( Sakorn_NH_RYG_WW  Tel.0969299842_E03 )","RYG","NODE","Nattapong"],["EX-EA-RYG-OFC-009","EX-EA-RYG-OFC-009 【ON】( Khajohn_OF_RYG_WW  Tel.0848843690_E01 )","RYG","OFC","Peerawat"],["EX-EA-RYG-OFC-013","EX-EA-RYG-OFC-013 【ON】( Suphawut_OF_RYG_WW  Tel.0970268763_E01 )","RYG","OFC","Peerawat"],["SY-EA-RYG-OFC-027","SY-EA-RYG-OFC-027 【ON】( Woranut_OF_RYG_WW  Tel.0980565436_E01 )","RYG","OFC","Peerawat"],["SY-EA-RYG-OFC-029","SY-EA-RYG-OFC-029 【ON】( Kittiphum_OF_RYG_WW  Tel.0965672328_E01 )","RYG","OFC","Peerawat"],["SY-EA-RYG-OFC-030","SY-EA-RYG-OFC-030 【ON】( Akkarak_OF_RYG_WW  Tel.0640810562_E01 )","RYG","OFC","Peerawat"],["SY-EA-RYG-OFC-031","SY-EA-RYG-OFC-031 【ON】( Kampanat_OF_RYG_WW  Tel.0989219053_E01 )","RYG","OFC","Peerawat"],["EX-EA-RYG-OFC-001","EX-EA-RYG-OFC-001 【ON】( Veerachai_OF_RYG_WW  Tel.0806372241_E11_EX )","RYG","OFC","Saithan"],["SY-EA-RYG-OFC-005","SY-EA-RYG-OFC-005 【ON】( Thanakorn_OF_RYG_WW  Tel.0985231948_E11 )","RYG","OFC","Saithan"],["SY-EA-RYG-OFC-007","SY-EA-RYG-OFC-007 【ON】( Surasak_OF_RYG_WW  Tel.0831178871_E11 )","RYG","OFC","Saithan"],["SY-EA-RYG-OFC-016","SY-EA-RYG-OFC-016 【ON】( Preecha_OF_RYG_WW  Tel.0958187051_E11 )","RYG","OFC","Saithan"],["SY-EA-RYG-OFC-017","SY-EA-RYG-OFC-017 【ON】( Jirayut_OF_RYG_WW  Tel.0918435580_E11 )","RYG","OFC","Saithan"],["SY-EA-RYG-OFC-023","SY-EA-RYG-OFC-023 【ON】( Sorathan_OF_RYG_WW  Tel.0642670672_E11 )","RYG","OFC","Saithan"],["SY-EA-RYG-OFC-024","SY-EA-RYG-OFC-024 【ON】( Chaloemphon_OF_RYG_WW  Tel.0962899137_E11 )","RYG","OFC","Saithan"],["SY-EA-SKO-NOD-003","SY-EA-SKO-NOD-003 【ON】( Chanpatsanap_NH_SKO_WW  Tel.0987859349_E08 )","SKO","NODE","Thanachai"],["SY-EA-SKO-NOD-005","SY-EA-SKO-NOD-005 【ON】( Khamtan_NH_SKO_WW  Tel.0639876301_E08 )","SKO","NODE","Thanachai"],["GT-EA-SKO-OFC-001","GT-EA-SKO-OFC-001 【ON】( Pirapong_OF_SKO_WW  Tel.0972542998_E08_EX )","SKO","OFC","Thanachai"],["GT-EA-SKO-OFC-003","GT-EA-SKO-OFC-003 【OFF】( Ammarin_OF_SKO_WW  Tel.0826151857_E08_EX )","SKO","OFC","Thanachai"],["SY-EA-SKO-OFC-011","SY-EA-SKO-OFC-011 【ON】( Suwanan_OF_SKO_WW  Tel.0932832837_E08 )","SKO","OFC","Thanachai"],["SY-EA-SKO-OFC-013","SY-EA-SKO-OFC-013 【ON】( Chanchai_OF_SKO_WW  Tel.0828961568_E08 )","SKO","OFC","Thanachai"],["SY-EA-SKO-OFC-014","SY-EA-SKO-OFC-014 【ON】( Parichat_OF_SKO_WW  Tel.0644829978_E08 )","SKO","OFC","Thanachai"],["SY-EA-SKO-OFC-015","SY-EA-SKO-OFC-015 【ON】( Chakhrit_OF_SKO_WW  Tel.0831515897_E08 )","SKO","OFC","Thanachai"],["SY-EA-SKO-OFC-018","SY-EA-SKO-OFC-018 【ON】( Tanachot_OF_SKO_WW  Tel.0947416802_E08 )","SKO","OFC","Thanachai"],["SY-EA-SKO-OFC-020","SY-EA-SKO-OFC-020 【ON】( Narin_OF_SKO_WW  Tel.0825080124_E08 )","SKO","OFC","Thanachai"],["SY-EA-SKO-OFC-021","SY-EA-SKO-OFC-021 【OFF】( Wanchat_OF_SKO_WW  Tel.0807767383_E08 )","SKO","OFC","Thanachai"],["SY-EA-SKO-OFC-023","SY-EA-SKO-OFC-023 【ON】( Noppanut_OF_SKO_WW  Tel.0824391090_E08 )","SKO","OFC","Thanachai"],["WW-EA-SKO-OFC-001","WW-EA-SKO-OFC-001 【OFF】( Prasit_OF_SKO_WW  Tel.0957709563_E08 )","SKO","OFC","Thanachai"],["EX-EA-TRT-OFC-002","EX-EA-TRT-OFC-002 【ON】( Thanaphat_OF_TRT_WW  Tel.0867081979_E23_EX )","TRT","OFC","Chaiyasit"],["EX-EA-TRT-OFC-003","EX-EA-TRT-OFC-003 【ON】( Prawit_OF_TRT_WW  Tel.0829054653_E23_EX )","TRT","OFC","Chaiyasit"],["SY-EA-TRT-OFC-010","SY-EA-TRT-OFC-010 【ON】( Jakkapan_OF_TRT_WW  Tel.0641175417_E23 )","TRT","OFC","Chaiyasit"],["SY-EA-TRT-OFC-011","SY-EA-TRT-OFC-011 【ON】( Yutthana_OF_TRT_WW  Tel.0997363944_E23 )","TRT","OFC","Chaiyasit"],["SY-EA-TRT-NOD-001","SY-EA-TRT-NOD-001 【ON】( Sakdachai_NO_TRT_WW  Tel.0813800825_E05 )","TRT","NODE","Thanakorn"],["SY-EA-TRT-NOD-002","SY-EA-TRT-NOD-002 【ON】( Atthaphon_NH_TRT_WW  Tel.0971536687_E05 )","TRT","NODE","Thanakorn"],["EX-EA-TRT-MUF-001","EX-EA-TRT-MUF-001 【ON】( Natthakit _OF_M1_TRT_WW  Tel.0630172136_E05 )","TRT","OFC","Thanakorn"],["SY-EA-TRT-OFC-007","SY-EA-TRT-OFC-007 【ON】( Yotsawin_OF_TRT_WW  Tel.0934600850_E05 )","TRT","OFC","Thanakorn"],["SY-EA-TRT-OFC-012","SY-EA-TRT-OFC-012 【ONC】( Racha_OF_TRT_WW  Tel.0625729852_E05 )","TRT","OFC","Thanakorn"]],"daily":[["2026-10-03","CC-EA-CBR-OFC-001",1,0,0,null,4,null],["2026-10-03","EX-EA-CBR-OFC-102",1,1,1,null,3,null],["2026-10-03","EX-EA-CBR-OFC-103",1,1,1,null,1,null],["2026-10-03","EX-EA-CBR-OFC-104",1,1,0,null,0,null],["2026-10-03","EX-EA-CBR-OFC-112",1,1,1,null,0,null],["2026-10-03","EX-EA-CBR-OFC-117",1,0,0,null,0,null],["2026-10-03","EX-EA-CBR-OFC-118",1,1,1,null,1,null],["2026-10-03","EX-EA-CBR-OFC-132",1,1,1,null,1,null],["2026-10-03","EX-EA-CBR-OFC-133",1,1,1,null,2,null],["2026-10-03","EX-EA-CBR-OFC-135",1,1,1,null,4,null],["2026-10-03","EX-EA-CBR-OFC-136",1,1,1,null,3,null],["2026-10-03","EX-EA-CBR-OFC-137",1,1,1,null,0,null],["2026-10-03","EX-EA-CBR-OFC-204",1,1,1,null,2,null],["2026-10-03","EX-EA-CBR-OFC-210",1,1,1,null,0,null],["2026-10-03","EX-EA-CBR-OFC-211",1,1,0,null,0,null],["2026-10-03","EX-EA-CBR-OFC-214",1,1,1,null,1,null],["2026-10-03","EX-EA-CCS-OFC-002",1,1,1,null,2,null],["2026-10-03","EX-EA-CCS-OFC-003",1,1,1,null,5,null],["2026-10-03","EX-EA-CCS-OFC-004",1,1,1,null,2,null],["2026-10-03","EX-EA-CCS-OFC-005",1,1,0,null,3,null],["2026-10-03","EX-EA-CCS-OFC-007",1,1,1,null,3,null],["2026-10-03","EX-EA-CCS-OFC-008",1,1,1,null,3,null],["2026-10-03","EX-EA-CCS-OFC-015",1,1,1,null,3,null],["2026-10-03","EX-EA-CCS-OFC-017",1,1,1,null,3,null],["2026-10-03","EX-EA-CCS-OFC-018",1,1,1,null,3,null],["2026-10-03","EX-EA-CCS-OFC-019",1,1,1,null,0,null],["2026-10-03","EX-EA-PCR-OFC-002",1,1,1,null,3,null],["2026-10-03","EX-EA-PCR-OFC-016",1,1,1,null,2,null],["2026-10-03","EX-EA-RYG-OFC-001",1,1,1,null,0,null],["2026-10-03","EX-EA-RYG-OFC-007",1,1,1,null,1,null],["2026-10-03","EX-EA-RYG-OFC-009",1,1,1,null,2,null],["2026-10-03","EX-EA-RYG-OFC-013",1,1,1,null,4,null],["2026-10-03","EX-EA-TRT-MUF-001",1,1,1,null,4,null],["2026-10-03","EX-EA-TRT-OFC-002",1,1,1,null,0,null],["2026-10-03","EX-EA-TRT-OFC-003",1,1,1,null,2,null],["2026-10-03","GT-EA-SKO-OFC-001",1,1,1,null,6,null],["2026-10-03","GT-EA-SKO-OFC-003",1,0,0,null,0,null],["2026-10-03","NP-EA-CBR-OFC-001",1,1,1,null,2,null],["2026-10-03","NP-EA-CBR-OFC-002",1,1,1,null,2,null],["2026-10-03","NP-EA-CBR-OFC-003",1,0,0,null,3,null],["2026-10-03","NP-EA-CCS-OFC-001",1,1,1,null,3,null],["2026-10-03","NP-EA-PCR-OFC-001",1,1,1,null,0,null],["2026-10-03","RU-EA-CBR-OFC-101",1,1,1,null,3,null],["2026-10-03","RU-EA-CBR-OFC-102",1,0,0,null,0,null],["2026-10-03","RU-EA-CBR-OFC-103",1,1,1,null,2,null],["2026-10-03","RU-EA-CBR-OFC-106",1,1,1,null,1,null],["2026-10-03","RU-EA-CBR-OFC-107",1,1,1,null,3,null],["2026-10-03","ST-EA-CBR-OFC-106",1,1,1,null,3,null],["2026-10-03","SY-EA-CBR-MUF-001",1,1,1,null,0,null],["2026-10-03","SY-EA-CBR-MUF-002",1,0,0,null,0,null],["2026-10-03","SY-EA-CBR-NOD-004",1,1,1,null,8,null],["2026-10-03","SY-EA-CBR-NOD-104",1,1,0,null,0,null],["2026-10-03","SY-EA-CBR-NOD-105",1,1,1,null,3,null],["2026-10-03","SY-EA-CBR-NOD-110",1,1,1,null,1,null],["2026-10-03","SY-EA-CBR-NOD-203",1,1,1,null,6,null],["2026-10-03","SY-EA-CBR-NOD-205",1,1,1,null,9,null],["2026-10-03","SY-EA-CBR-NOD-206",1,1,1,null,4,null],["2026-10-03","SY-EA-CBR-OFC-109",1,1,1,null,3,null],["2026-10-03","SY-EA-CBR-OFC-110",1,1,1,null,3,null],["2026-10-03","SY-EA-CBR-OFC-204",1,1,1,null,3,null],["2026-10-03","SY-EA-CBR-OFC-205",1,1,1,null,6,null],["2026-10-03","SY-EA-CBR-OFC-210",1,1,1,null,4,null],["2026-10-03","SY-EA-CBR-OFC-211",1,1,1,null,1,null],["2026-10-03","SY-EA-CBR-OFC-213",1,1,1,null,2,null],["2026-10-03","SY-EA-CBR-OFC-214",1,1,1,null,3,null],["2026-10-03","SY-EA-CCS-NOD-003",1,1,1,null,1,null],["2026-10-03","SY-EA-CCS-NOD-004",1,1,1,null,2,null],["2026-10-03","SY-EA-CCS-NOD-005",1,1,1,null,1,null],["2026-10-03","SY-EA-CCS-OFC-001",1,1,1,null,8,null],["2026-10-03","SY-EA-CCS-OFC-003",1,0,0,null,0,null],["2026-10-03","SY-EA-CCS-OFC-004",1,1,1,null,1,null],["2026-10-03","SY-EA-CCS-OFC-005",1,0,0,null,5,null],["2026-10-03","SY-EA-CCS-OFC-006",1,0,0,null,4,null],["2026-10-03","SY-EA-CTB-NOD-002",1,1,1,null,6,null],["2026-10-03","SY-EA-CTB-NOD-003",1,1,1,null,2,null],["2026-10-03","SY-EA-CTB-NOD-004",1,1,1,null,2,null],["2026-10-03","SY-EA-CTB-OFC-002",1,1,1,null,2,null],["2026-10-03","SY-EA-CTB-OFC-003",1,1,1,null,1,null],["2026-10-03","SY-EA-CTB-OFC-004",1,1,1,null,2,null],["2026-10-03","SY-EA-CTB-OFC-005",1,1,1,null,5,null],["2026-10-03","SY-EA-CTB-OFC-009",1,1,1,null,2,null],["2026-10-03","SY-EA-CTB-OFC-010",1,0,0,null,0,null],["2026-10-03","SY-EA-NKN-NOD-003",1,1,1,null,1,null],["2026-10-03","SY-EA-NKN-NOD-004",1,1,1,null,1,null],["2026-10-03","SY-EA-NKN-OFC-002",1,1,1,null,3,null],["2026-10-03","SY-EA-NKN-OFC-003",1,1,1,null,9,null],["2026-10-03","SY-EA-PCR-NOD-001",1,0,0,null,5,null],["2026-10-03","SY-EA-PCR-NOD-005",1,1,1,null,3,null],["2026-10-03","SY-EA-PCR-OFC-003",1,0,0,null,2,null],["2026-10-03","SY-EA-PCR-OFC-008",1,1,1,null,2,null],["2026-10-03","SY-EA-PCR-OFC-010",1,1,1,null,1,null],["2026-10-03","SY-EA-PCR-OFC-012",1,0,0,null,2,null],["2026-10-03","SY-EA-RYG-NOD-001",1,1,1,null,12,null],["2026-10-03","SY-EA-RYG-NOD-005",1,1,1,null,1,null],["2026-10-03","SY-EA-RYG-NOD-006",1,1,1,null,2,null],["2026-10-03","SY-EA-RYG-NOD-008",1,1,1,null,3,null],["2026-10-03","SY-EA-RYG-NOD-009",1,1,1,null,3,null],["2026-10-03","SY-EA-RYG-NOD-011",1,1,1,null,5,null],["2026-10-03","SY-EA-RYG-OFC-005",1,1,1,null,5,null],["2026-10-03","SY-EA-RYG-OFC-006",1,1,1,null,8,null],["2026-10-03","SY-EA-RYG-OFC-007",1,1,1,null,4,null],["2026-10-03","SY-EA-RYG-OFC-016",1,1,1,null,3,null],["2026-10-03","SY-EA-RYG-OFC-017",1,1,1,null,2,null],["2026-10-03","SY-EA-RYG-OFC-020",1,1,1,null,4,null],["2026-10-03","SY-EA-RYG-OFC-022",1,1,1,null,0,null],["2026-10-03","SY-EA-RYG-OFC-023",1,1,1,null,3,null],["2026-10-03","SY-EA-RYG-OFC-024",1,1,1,null,5,null],["2026-10-03","SY-EA-RYG-OFC-027",1,1,1,null,2,null],["2026-10-03","SY-EA-RYG-OFC-029",1,1,1,null,3,null],["2026-10-03","SY-EA-RYG-OFC-030",1,1,1,null,2,null],["2026-10-03","SY-EA-RYG-OFC-031",1,1,1,null,1,null],["2026-10-03","SY-EA-RYG-OFC-032",1,1,1,null,6,null],["2026-10-03","SY-EA-SKO-NOD-003",1,1,1,null,4,null],["2026-10-03","SY-EA-SKO-NOD-005",1,1,1,null,6,null],["2026-10-03","SY-EA-SKO-OFC-011",1,1,1,null,2,null],["2026-10-03","SY-EA-SKO-OFC-013",1,1,1,null,3,null],["2026-10-03","SY-EA-SKO-OFC-014",1,1,1,null,1,null],["2026-10-03","SY-EA-SKO-OFC-015",1,1,1,null,2,null],["2026-10-03","SY-EA-SKO-OFC-018",1,1,1,null,3,null],["2026-10-03","SY-EA-SKO-OFC-020",1,1,1,null,4,null],["2026-10-03","SY-EA-SKO-OFC-021",1,0,0,null,0,null],["2026-10-03","SY-EA-SKO-OFC-023",1,1,1,null,2,null],["2026-10-03","SY-EA-TRT-NOD-001",1,1,1,null,5,null],["2026-10-03","SY-EA-TRT-NOD-002",1,1,1,null,7,null],["2026-10-03","SY-EA-TRT-OFC-007",1,1,1,null,1,null],["2026-10-03","SY-EA-TRT-OFC-010",1,1,1,null,2,null],["2026-10-03","SY-EA-TRT-OFC-011",1,1,1,null,3,null],["2026-10-03","SY-EA-TRT-OFC-012",1,0,0,null,1,null],["2026-10-03","SYS-NKN-OFC-Kasitinat",1,1,1,null,3,null],["2026-10-03","WW-EA-SKO-OFC-001",1,0,0,null,0,null]]};
-const LS='report_inoc_2026', LC='report_inoc_2026_cfg';
-let S, cfg = JSON.parse(localStorage.getItem(LC)||'{}');
+let S={roster:[],teams:{},daily:{}}, cfg={
+  url:'https://sipjbghqgnfunpqaqqwm.supabase.co',
+  key:'sb_publishable_86gbP0WFp3x7KalLfQ7ugw_C3U1F49k'
+};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const num=v=>(v===null||v===undefined||v==='')?null:(isNaN(Number(v))?null:Number(v));
@@ -145,32 +148,33 @@ const key=(d,t)=>d+'|'+t;
 const tcode=s=>String(s??'').trim().split(/\s+/)[0];   // รหัสทีม เช่น CC-EA-CBR-OFC-001 (ไม่ผูกกับ 【ON/OFF】)
 const fmtD=d=>{const [y,m,x]=d.split('-');return `${+x}/${+m}/${y}`};
 
-// ---------- storage ----------
+// ---------- state (Supabase is the only persistent store) ----------
 function init(){
-  const raw=localStorage.getItem(LS);
-  if(raw) S=JSON.parse(raw);
-  else{
-    S={roster:SEED.roster.map((r,i)=>({sort:i,...r})),teams:{},daily:{}};
-    SEED.teams.forEach(([id,nm,pv,sk,sp])=>S.teams[id]={team_id:id,team_name:nm,region:'EAS',province:pv,skill:sk,supervisor:sp,is_current:true});
-    SEED.daily.forEach(([d,t,a,p,w,ar,j,nr])=>S.daily[key(d,t)]={report_date:d,team_id:t,team_active:a,work_plan:p,work_actual:w,absent_reason:ar,jobs_closed:j,not_closed_reason:nr});
-    save();
-  }
+  S={roster:[],teams:{},daily:{}};
 }
-const save=()=>localStorage.setItem(LS,JSON.stringify(S));
 
 async function sb(method,path,body,hdr={}){
   const r=await fetch(cfg.url.replace(/\/$/,'')+'/rest/v1/'+path,{method,headers:{apikey:cfg.key,Authorization:'Bearer '+cfg.key,'Content-Type':'application/json',...hdr},body:body?JSON.stringify(body):undefined});
   if(!r.ok) throw new Error(await r.text());
-  return method==='GET'?r.json():null;
+  if(r.status===204) return null;
+  const text=await r.text(); return text?JSON.parse(text):null;
 }
 const remote=()=>cfg.url&&cfg.key;
+function readCfg(){
+  const url=$('cUrl').value.trim().replace(/\/$/,'');
+  const key=$('cKey').value.trim();
+  if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)) throw new Error('Project URL ไม่ถูกต้อง');
+  if(!key) throw new Error('กรุณาใส่ anon / publishable key');
+  cfg={url,key}; return cfg;
+}
 async function upsert(table,rows,conflict){
-  save(); if(!remote()||!rows.length) return;
+  if(!remote()) throw new Error('ยังไม่ได้เชื่อมต่อ Supabase');
+  if(!rows.length) return;
   try{
     for(let i=0;i<rows.length;i+=500)
       await sb('POST',`${table}?on_conflict=${conflict}`,rows.slice(i,i+500),{Prefer:'resolution=merge-duplicates,return=minimal'});
     status('บันทึกขึ้น Supabase แล้ว');
-  }catch(e){status('Supabase error: '+e.message,1)}
+  }catch(e){status('Supabase error: '+e.message,1);throw e}
 }
 async function getAll(table){
   let out=[],from=0;
@@ -186,7 +190,13 @@ async function pull(){
   S.roster=ro.sort((a,b)=>a.sort-b.sort);
   S.teams={};te.forEach(t=>S.teams[t.team_id]=t);
   S.daily={};da.forEach(d=>S.daily[key(d.report_date,d.team_id)]=d);
-  save();
+}
+async function testConnection(){
+  const tables=['roster','teams','daily_follow','upload_log'], counts={};
+  for(const table of tables){
+    const rows=await sb('GET',`${table}?select=*&limit=1`); counts[table]=rows.length;
+  }
+  return counts;
 }
 async function push(){
   await sb('DELETE','roster?province=neq.__none__',null);
@@ -194,7 +204,7 @@ async function push(){
   await upsert('teams',Object.values(S.teams),'team_id');
   await upsert('daily_follow',Object.values(S.daily),'report_date,team_id');
 }
-function status(m,bad){const e=$('st');e.textContent=(remote()?'● Supabase: ':'○ โหมดเครื่องนี้ (localStorage): ')+m;e.style.color=bad?'var(--bad)':''}
+function status(m,bad){const e=$('st');e.textContent=(remote()?'● Supabase: ':'○ ยังไม่เชื่อมต่อ Supabase: ')+m;e.style.color=bad?'var(--bad)':''}
 
 // ---------- summary ----------
 const skillF=()=>$('skill').value;
@@ -223,7 +233,7 @@ const cls=p=>p===null?'':p>=95?'good':p<85?'warn':'';
 function renderSum(){
   const date=$('date').value, rows=rosterRows(), T={teams:0,active:0,plan:0,actual:0,jobs:0};
   let h=`<div class="ttl"><span>สรุปรายงาน${skillF()?' ('+skillF()+')':''}</span><span>${date?fmtD(date):''}</span></div>
-  <table><thead><tr><th>AD EAS</th><th>Mgr.</th><th>Cluster Leader</th><th>Province</th><th>Active</th><th>Plan</th><th>Actual</th><th>ขาด</th><th>% Actual/Plan</th><th>งานที่ปิดได้</th></tr></thead><tbody>`;
+  <table><thead><tr><th>Associate Director</th><th>Manager Area</th><th>Cluster Leader</th><th>Province</th><th>Active</th><th>Plan</th><th>Actual</th><th>ขาด</th><th>% Actual/Plan</th><th>งานที่ปิดได้</th></tr></thead><tbody>`;
   rows.forEach((r,i)=>{
     const c=calc(r.province,date); for(const k in T) T[k]+=c[k];
     const p=pct(c.actual,c.plan), sa=span(rows,i,['ad_eas']), sm=span(rows,i,['ad_eas','mgr']), sl=span(rows,i,['ad_eas','mgr','cluster_leader']);
@@ -254,14 +264,17 @@ function renderDet(){
   $('detTbl').innerHTML=h+`</tbody></table><div style="color:var(--mut);margin-top:6px">${n} ทีม · แก้ไขแล้วบันทึกอัตโนมัติ</div>`;
 }
 let timer,pending={};
-$('detTbl').addEventListener('change',e=>{
+function queueDetailSave(e){
   const i=e.target; if(!i.dataset.t) return;
   const date=$('date').value, k=key(date,i.dataset.t);
   const d=S.daily[k]||(S.daily[k]={report_date:date,team_id:i.dataset.t,team_active:1,work_plan:1,work_actual:null,absent_reason:null,jobs_closed:null,not_closed_reason:null});
   d[i.dataset.k]=i.type==='number'?num(i.value):(i.value||null);
   pending[k]=d; clearTimeout(timer);
-  timer=setTimeout(async()=>{const rows=Object.values(pending);pending={};await upsert('daily_follow',rows,'report_date,team_id');renderSum();if(!remote())status('บันทึกแล้ว')},500);
-});
+  status('กำลังบันทึกข้อมูล...');
+  timer=setTimeout(async()=>{const rows=Object.values(pending);pending={};try{await upsert('daily_follow',rows,'report_date,team_id');renderSum()}catch(e){status('บันทึกไม่สำเร็จ กำลังคืนค่าจากฐานข้อมูล: '+e.message,1);try{await pull();refresh()}catch(_){}}},500);
+}
+$('detTbl').addEventListener('change',queueDetailSave);
+$('detTbl').addEventListener('input',e=>{if(e.target.tagName==='TEXTAREA') queueDetailSave(e)});
 
 // ---------- Excel import ----------
 function toISO(v){
@@ -272,18 +285,29 @@ function toISO(v){
 const readWB=f=>f.arrayBuffer().then(b=>XLSX.read(b,{type:'array',cellDates:true}));
 const grid=ws=>XLSX.utils.sheet_to_json(ws,{header:1,defval:null,raw:true});
 async function logUpload(kind,file,ok,detail){
-  if(!remote()) return;
-  try{await sb('POST','upload_log',[{kind,file_name:file,ok,detail}],{Prefer:'return=minimal'})}catch(e){}
+  if(!remote()) throw new Error('ยังไม่ได้เชื่อมต่อ Supabase');
+  await sb('POST','upload_log',[{kind,file_name:file,ok,detail}],{Prefer:'return=minimal'});
+}
+function showPipeline(title,steps,ok){
+  $('dW').querySelector('b').textContent=title;
+  $('wSteps').innerHTML=steps.map(s=>`<div class="stp ${s.st}"><b>${s.st==='ok'?'✓':s.st==='warn'?'!':'✗'}</b><div>${esc(s.n)}<small>${esc(s.msg)}</small></div></div>`).join('')
+    +`<div style="margin-top:10px;font-weight:700;color:var(${ok?'--ok':'--bad'})">${ok?'Pipeline สำเร็จ — บันทึกและตรวจสอบข้อมูลแล้ว':'Pipeline ไม่สำเร็จ — ดูสาเหตุในขั้นตอนเครื่องหมาย ✗'}</div>`;
+  $('dW').showModal();
 }
 
 // --- Teams Online: รายชื่อทีม + Active/Plan/Actual ของวันที่เลือก ---
 let pendingTeams=null;
 async function importTeams(file,date){
-  const wb=await readWB(file); let rows,h=-1;
+  const steps=[],add=(n,st,msg)=>steps.push({n,st,msg});
+  let wb,rows,h=-1;
+  try{wb=await readWB(file);add('1. อ่านไฟล์','ok',`เปิดไฟล์ ${file.name} ได้ · ${wb.SheetNames.length} ชีต`)}
+  catch(e){add('1. อ่านไฟล์','fail',e.message);showPipeline('Pipeline นำเข้ารายชื่อทีม',steps,false);return}
   for(const n of wb.SheetNames){rows=grid(wb.Sheets[n]);h=rows.findIndex(r=>r&&r.includes('Team')&&r.includes('Province'));if(h>=0)break}
-  if(h<0) return alert('ไม่พบหัวคอลัมน์ Province / Team ในไฟล์นี้');
+  if(h<0){add('2. ตรวจหัวตาราง','fail','ไม่พบหัวคอลัมน์ Province / Team ในทุกชีต');try{await logUpload('teams',file.name,false,{steps})}catch(_){}showPipeline('Pipeline นำเข้ารายชื่อทีม',steps,false);return}
+  add('2. ตรวจหัวตาราง','ok',`พบหัวตารางที่แถว ${h+1}`);
   const need=['Province','Team','Team Total','Working Plan','Clock in'], miss=need.filter(c=>!rows[h].includes(c));
-  if(miss.length){await logUpload('teams',file.name,false,{missing:miss});return alert('ไฟล์ Teams Online ขาดคอลัมน์: '+miss.join(', '))}
+  if(miss.length){add('3. ตรวจ Column','fail','ขาดคอลัมน์: '+miss.join(', '));try{await logUpload('teams',file.name,false,{steps,missing:miss})}catch(_){}showPipeline('Pipeline นำเข้ารายชื่อทีม',steps,false);return}
+  add('3. ตรวจ Column','ok',`ครบ ${need.length}/${need.length} คอลัมน์ที่จำเป็น`);
   const ix=n=>rows[h].indexOf(n);
   let pv=null,sp=null,sk=null;const found=new Set(),tOut=[],dOut=[];
   rows.slice(h+1).forEach(r=>{
@@ -298,12 +322,24 @@ async function importTeams(file,date){
     d.team_active=num(r[ix('Team Total')])??0; d.work_plan=num(r[ix('Working Plan')])??0; d.work_actual=num(r[ix('Clock in')])??0;
     dOut.push(d);
   });
+  if(!found.size){add('4. แปลงข้อมูลทีม','fail','ไม่พบรายการทีมที่นำเข้าได้');try{await logUpload('teams',file.name,false,{steps})}catch(_){}showPipeline('Pipeline นำเข้ารายชื่อทีม',steps,false);return}
   const gone=Object.values(S.teams).filter(t=>t.is_current!==false&&!found.has(t.team_id));
   gone.forEach(t=>{t.is_current=false;tOut.push(t)});
-  await upsert('teams',tOut,'team_id'); await upsert('daily_follow',dOut,'report_date,team_id');
-  await logUpload('teams',file.name,true,{date,teams:found.size,removed:gone.length});
+  add('4. แปลงข้อมูลทีม','ok',`พร้อมบันทึก ${found.size} ทีม วันที่ ${fmtD(date)}${gone.length?` · ถอดทีมเดิม ${gone.length} ทีม`:''}`);
+  try{await upsert('teams',tOut,'team_id');await upsert('daily_follow',dOut,'report_date,team_id');add('5. บันทึก Supabase','ok',`บันทึก teams ${tOut.length} แถว และ daily_follow ${dOut.length} แถว`)}
+  catch(e){add('5. บันทึก Supabase','fail',e.message);try{await logUpload('teams',file.name,false,{steps})}catch(_){}showPipeline('Pipeline นำเข้ารายชื่อทีม',steps,false);return}
+  try{
+    await pull();
+    const savedTeams=[...found].filter(id=>S.teams[id]?.is_current!==false).length;
+    const savedDaily=[...found].filter(id=>S.daily[key(date,id)]).length;
+    if(savedTeams!==found.size||savedDaily!==found.size) throw new Error(`คาด ${found.size} ทีม แต่พบ teams ${savedTeams} / daily_follow ${savedDaily}`);
+    add('6. Recheck จาก Database','ok',`อ่านกลับตรงกัน ${savedTeams} ทีม / ${savedDaily} รายการรายวัน`);
+  }catch(e){add('6. Recheck จาก Database','fail',e.message);try{await logUpload('teams',file.name,false,{steps})}catch(_){}showPipeline('Pipeline นำเข้ารายชื่อทีม',steps,false);return}
+  try{await logUpload('teams',file.name,true,{date,teams:found.size,removed:gone.length,steps});add('7. บันทึก Upload Log','ok','บันทึกประวัติการนำเข้าแล้ว')}
+  catch(e){add('7. บันทึก Upload Log','fail',e.message);showPipeline('Pipeline นำเข้ารายชื่อทีม',steps,false);return}
   $('date').value=date; refresh();
   status(`อัปเดตรายชื่อทีม ${found.size} ทีม + Active/Plan/Actual วันที่ ${fmtD(date)}${gone.length?` · ถอดออก ${gone.length} ทีม`:''}`);
+  showPipeline('Pipeline นำเข้ารายชื่อทีม',steps,true);
 }
 
 // --- CM Work Order List: นับ "งานที่ปิดได้" + Pipeline Recheck Column ---
@@ -367,16 +403,14 @@ async function importWO(file){
     refresh();
   }
   await logUpload('wo',file.name,res.ok,{steps:res.steps,total:res.total});
-  $('wSteps').innerHTML=res.steps.map(s=>`<div class="stp ${s.st}"><b>${s.st==='ok'?'✓':s.st==='warn'?'!':'✗'}</b><div>${esc(s.n)}<small>${esc(s.msg)}</small></div></div>`).join('')
-    +`<div style="margin-top:10px;font-weight:700;color:var(${res.ok&&!res.steps.some(s=>s.st==='fail')?'--ok':'--bad'})">${res.ok&&!res.steps.some(s=>s.st==='fail')?'Pipeline สำเร็จ':'Pipeline ไม่สำเร็จ — ไม่มีข้อมูลถูกบันทึก'}</div>`;
-  $('dW').showModal();
+  showPipeline('Pipeline นำเข้างานที่ปิดได้',res.steps,res.ok&&!res.steps.some(s=>s.st==='fail'));
 }
 
 $('bTeams').onclick=()=>$('fTeams').click(); $('bWO').onclick=()=>$('fWO').click();
 $('fTeams').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f){pendingTeams=f;$('tDate').value=$('date').value||new Date().toISOString().slice(0,10);$('dT').showModal()}};
 $('tCancel').onclick=()=>{pendingTeams=null;$('dT').close()};
-$('tOk').onclick=async()=>{const f=pendingTeams,d=$('tDate').value;if(!f||!d)return;pendingTeams=null;$('dT').close();try{await importTeams(f,d)}catch(x){alert(x.message)}};
-$('fWO').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(f)try{await importWO(f)}catch(x){alert(x.message)}};
+$('tOk').onclick=async()=>{const f=pendingTeams,d=$('tDate').value;if(!f||!d)return;pendingTeams=null;$('dT').close();try{await importTeams(f,d)}catch(x){showPipeline('Pipeline นำเข้ารายชื่อทีม',[{n:'Pipeline error',st:'fail',msg:x.message}],false)}};
+$('fWO').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(f)try{await importWO(f)}catch(x){showPipeline('Pipeline นำเข้างานที่ปิดได้',[{n:'Pipeline error',st:'fail',msg:x.message}],false)}};
 $('wClose').onclick=()=>$('dW').close();
 
 // ---------- roster editor ----------
@@ -390,16 +424,17 @@ $('rAdd').onclick=()=>$('rBody').append(rRow());
 $('rCancel').onclick=()=>$('dR').close();
 $('rSave').onclick=async()=>{
   S.roster=[...$('rBody').rows].map((tr,i)=>{const o={sort:i};tr.querySelectorAll('input').forEach(x=>o[x.dataset.k]=x.value.trim());return o}).filter(r=>r.province);
-  save(); $('dR').close(); refresh();
-  if(remote()) try{await sb('DELETE','roster?province=neq.__none__',null);await upsert('roster',S.roster.map((r,i)=>({province:r.province,region:'EAS',ad_eas:r.ad_eas,mgr:r.mgr,cluster_leader:r.cluster_leader,sort:i})),'province')}catch(e){status(e.message,1)}
+  if(!remote()){status('ยังไม่ได้เชื่อมต่อ Supabase',1);return}
+  try{await sb('DELETE','roster?province=neq.__none__',null);await upsert('roster',S.roster.map((r,i)=>({province:r.province,region:'EAS',ad_eas:r.ad_eas,mgr:r.mgr,cluster_leader:r.cluster_leader,sort:i})),'province');$('dR').close();refresh()}catch(e){status(e.message,1);await pull();refresh()}
 };
 
 // ---------- supabase dialog ----------
 $('bCfg').onclick=()=>{$('cUrl').value=cfg.url||'';$('cKey').value=cfg.key||'';$('dC').showModal()};
 $('cCancel').onclick=()=>$('dC').close();
-$('cSave').onclick=()=>{cfg={url:$('cUrl').value.trim(),key:$('cKey').value.trim()};localStorage.setItem(LC,JSON.stringify(cfg));$('dC').close();status('บันทึกการเชื่อมต่อแล้ว')};
-$('cPush').onclick=async()=>{cfg={url:$('cUrl').value.trim(),key:$('cKey').value.trim()};localStorage.setItem(LC,JSON.stringify(cfg));try{await push();alert('ส่งข้อมูลขึ้น Supabase เรียบร้อย')}catch(e){alert(e.message)}};
-$('cPull').onclick=async()=>{cfg={url:$('cUrl').value.trim(),key:$('cKey').value.trim()};localStorage.setItem(LC,JSON.stringify(cfg));try{await pull();$('dC').close();refresh();status('ดึงข้อมูลแล้ว')}catch(e){alert(e.message)}};
+$('cSave').onclick=()=>{try{readCfg();$('dC').close();status('ใช้การเชื่อมต่อนี้ใน session ปัจจุบัน')}catch(e){$('cStatus').textContent=e.message;$('cStatus').style.color='var(--bad)'}};
+$('cTest').onclick=async()=>{try{readCfg();$('cStatus').textContent='กำลังตรวจ 4 ตาราง...';$('cStatus').style.color='var(--mut)';await testConnection();$('cStatus').textContent='✓ เชื่อมต่อสำเร็จ และเข้าถึงครบทั้ง 4 ตาราง';$('cStatus').style.color='var(--ok)'}catch(e){$('cStatus').textContent='✗ '+e.message;$('cStatus').style.color='var(--bad)'}};
+$('cPush').onclick=async()=>{try{readCfg();await testConnection();await push();alert('ส่งข้อมูลขึ้น Supabase เรียบร้อย')}catch(e){alert('ส่งข้อมูลไม่สำเร็จ: '+e.message)}};
+$('cPull').onclick=async()=>{try{readCfg();await testConnection();await pull();$('dC').close();refresh();status('ดึงข้อมูลแล้ว')}catch(e){alert('ดึงข้อมูลไม่สำเร็จ: '+e.message)}};
 
 // ---------- UI wiring ----------
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
@@ -421,6 +456,7 @@ function refresh(){
   init();
   $('date').value=new Date().toISOString().slice(0,10);
   if(remote()){try{await pull()}catch(e){status('ดึงข้อมูลไม่ได้: '+e.message,1)}}
+  else{status('กรุณาเชื่อมต่อ Supabase ก่อนใช้งาน',1);$('dC').showModal()}
   const all=[...new Set(Object.values(S.daily).map(d=>d.report_date))].sort();
   if(all.length&&!all.includes($('date').value)) $('date').value=all[all.length-1];
   refresh(); if(!$('st').textContent) status('พร้อมใช้งาน');
